@@ -75,10 +75,10 @@
         document.getElementById("shipping-info").innerHTML = ''
     }
 
-    if(user === 'AnonymousUser'){
+    if(user != 'AnonymousUser'){
         document.getElementById('user-info').innerHTML = ''
     }
-    if (shipping == 'False' && 'AnonymousUser'){
+    if (shipping == 'False' && user != 'AnonymousUser'){
         //hide entire form is user is logged in and shipping is false
         document.getElementById('form-wrapper').classList.add('hidden')
         //show payment if logged in user wants to buy an item that doesnt require shipping
@@ -119,7 +119,7 @@
             shippingInfo.zipcode = form.zipcode.value
         }
         // remember user is in home.html thats why am able to access it
-        if (user != 'AnnoymousUser'){
+        if (user == 'AnnoymousUser'){
             userFormData.name = form.name.value
             userFormData.email = form.email.value
 
@@ -146,8 +146,11 @@
             .then((data) => {
                 console.log('success:', data)
                 alert('Transaction completed')
+
+                cart = {}
+                document.cookie ='cart=' + JSON.stringify(cart) + ";domain=;path=/"
                 // reloads to the home page
-                window.location.href = "{% url 'store' %} "
+                window.location.href = "{% url 'store' %}"
             })
 
         

@@ -8,13 +8,39 @@ for(var i= 0; i < updateBtn.length; i++){
 
         console.log('USER:', user)
         if(user === 'AnonymousUser'){
-            console.log('User is not authenticated')
+            addCookieItem(productId,action)
         }else{
             updateUserOrder(productId, action)
         }
     })
 }
 
+// for an unauthenticated user
+function addCookieItem(productId, action){
+    console.log('not logged in')
+    if (action == 'add'){
+        if(cart[productId] == undefined){
+            cart[productId] = {'quantity':1}
+          
+        }else{
+            cart[productId]['quantity'] += 1
+        }
+    }
+    if(action == 'remove'){
+        cart[productId]['quantity'] -= 1
+        if (cart[productId]['quantity'] <= 0){
+            console.log('item should be deleted')
+            delete cart[productId]
+        }
+    }
+    console.log('cart', cart)
+    // send it the this address
+    document.cookie ='cart=' + JSON.stringify(cart) + ";domain=;path=/"
+    location.reload()
+
+}
+
+//if user is authenticated
 function updateUserOrder(productId, action){
     console.log('User is authenticated, sending data...')
     // the url that the data will be sent to
@@ -38,7 +64,7 @@ function updateUserOrder(productId, action){
         location.reload()
     })
 
-    
+
 }
 
  
